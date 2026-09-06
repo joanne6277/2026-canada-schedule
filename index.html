@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>2026 加拿大之旅 行李打包清單</title>
+<meta name="description" content="2026 加拿大家族之旅的行李打包清單，可以直接在手機上勾選。">
+<meta name="theme-color" content="#1f3864">
+
+<!-- 貼到 LINE 或 Facebook 時顯示的預覽資訊 -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="2026 加拿大之旅 行李打包清單">
+<meta property="og:description" content="打開就能勾選，勾到哪裡會自動記住。">
+<meta property="og:locale" content="zh_TW">
+
+<!-- 更新內容後，把下面兩個 v=1 改成 v=2、v=3…，家人才會看到最新版 -->
+<link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+
+<!-- 內容全部由 content.js 提供，版面由 app.js 產生 -->
+<header id="pageHeader"></header>
+
+<div class="progress">
+  <div id="ptext">打包進度</div>
+  <div class="bar"><span id="pbar"></span></div>
+</div>
+
+<div class="wrap">
+  <div id="notice"></div>
+  <nav id="nav"></nav>
+  <main id="main"></main>
+  <button class="reset" id="resetBtn">清除全部勾選，重新開始</button>
+  <p class="foot" id="foot"></p>
+</div>
+
+<button class="top" id="topBtn">回到最上面</button>
+
+<script src="content.js?v=1"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,405 @@
+/* ============================================================================
+   版面樣式（手機優先設計）
+   想調整顏色或字體大小改這裡；改文字請去 content.js
+   ----------------------------------------------------------------------------
+   結構順序：
+   1. 變數設定      2. 基本排版      3. 頁首與進度條
+   4. 各區塊樣式    5. 平板/電腦     6. 列印
+   ========================================================================== */
+
+/* ---------- 1. 變數設定 ---------- */
+:root {
+  color-scheme: light;
+  --navy: #1f3864;
+  --blue: #2e5395;
+  --ink: #1a1a1a;
+  --grey: #555;
+  --line: #d8dee9;
+  --bg: #fff;
+  --soft: #f2f6fc;
+  --warm: #fff6e0;
+  --gold: #8f6300;
+  --red: #b3261e;
+  --green: #2e7d32;
+  --greenbg: #e8f5e9;
+
+  --font-base: 19px;      /* 手機的基本字級，想再放大改這裡 */
+  --radius: 14px;
+  --bar-height: 62px;     /* 上方進度條高度，錨點跳頁時會避開 */
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC",
+               -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: var(--font-base);
+  line-height: 1.7;
+  -webkit-text-size-adjust: 100%;
+  overflow-wrap: break-word;
+}
+
+/* ---------- 2. 基本排版 ---------- */
+.wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  /* 底部留白要避開 iPhone 的home列，以及右下角的浮動按鈕 */
+  padding: 0 16px calc(120px + env(safe-area-inset-bottom, 0px));
+}
+
+/* ---------- 3. 頁首與進度條 ---------- */
+header {
+  background: var(--navy);
+  color: #fff;
+  padding: 26px 16px 22px;
+  text-align: center;
+}
+header h1 { margin: 0 0 8px; font-size: 26px; line-height: 1.35; }
+header .dates { font-size: 18px; opacity: .95; margin: 0; }
+
+.progress {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, .97);
+  backdrop-filter: blur(4px);
+  border-bottom: 2px solid var(--line);
+  padding: 10px 16px 12px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.bar {
+  height: 10px;
+  background: #e4e9f2;
+  border-radius: 8px;
+  margin-top: 7px;
+  overflow: hidden;
+}
+.bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--green);
+  transition: width .25s;
+}
+
+/* ---------- 4. 各區塊樣式 ---------- */
+
+/* 重點提醒（黃框） */
+.notice {
+  background: var(--warm);
+  border: 3px solid #e8c46a;
+  border-radius: var(--radius);
+  padding: 18px 18px 16px;
+  margin: 22px 0 8px;
+}
+.notice h2 { margin: 0 0 10px; font-size: 21px; color: var(--gold); }
+.notice p { margin: 0 0 12px; font-size: 18px; }
+.notice p:last-child { margin-bottom: 0; }
+
+/* 跳頁按鈕：手機兩欄 */
+nav { margin: 24px 0 8px; }
+nav p { font-size: 18px; color: var(--grey); margin: 0 0 10px; }
+.navbtns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.navbtns a {
+  min-height: 58px;
+  padding: 12px 8px;
+  background: var(--soft);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  color: var(--navy);
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.navbtns a:active { background: #dde7f6; }
+
+/* 段落標題。scroll-margin 讓錨點跳過去時不會被上面的進度條擋住 */
+section {
+  margin-top: 36px;
+  scroll-margin-top: calc(var(--bar-height) + 10px);
+}
+section > h2 {
+  font-size: 24px;
+  color: var(--navy);
+  margin: 0 0 6px;
+  padding-bottom: 9px;
+  border-bottom: 4px solid var(--blue);
+}
+.hint { font-size: 17px; color: var(--grey); margin: 10px 0 14px; }
+
+/* 天氣卡片 */
+.wcard {
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  background: var(--soft);
+}
+.wcard .place { font-size: 20px; font-weight: 700; color: var(--navy); }
+.wcard .temp { font-size: 19px; margin: 5px 0 3px; }
+.wcard .tip { font-size: 17px; color: var(--grey); }
+.wcard.cold { background: #eaf3fb; border-color: #a8c8e8; }
+.wcard.cold .tip { color: var(--red); font-weight: 700; }
+
+/* 三層穿衣 */
+.layer {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+.layer .num {
+  flex: 0 0 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.layer .body strong { font-size: 19px; display: block; margin-bottom: 3px; }
+.layer .body span { font-size: 18px; color: var(--grey); }
+
+/* 勾選清單 */
+ul.list { list-style: none; margin: 0; padding: 0; }
+ul.list li { margin-bottom: 9px; }
+ul.list label {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-height: 58px;
+  padding: 13px 14px;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 19px;
+}
+ul.list label:active { background: var(--soft); }
+ul.list input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  margin: 2px 0 0;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+ul.list label.done { background: var(--greenbg); border-color: #a5d6a7; }
+ul.list label.done .txt { color: #4c7a4f; text-decoration: line-through; }
+.txt small {
+  display: block;
+  font-size: 16px;
+  color: var(--grey);
+  text-decoration: none;
+  margin-top: 2px;
+}
+.txt strong.must { color: var(--red); }
+
+/* 頁尾與按鈕 */
+.reset {
+  display: block;
+  width: 100%;
+  margin: 30px 0 0;
+  padding: 17px;
+  font-size: 18px;
+  font-family: inherit;
+  font-weight: 700;
+  color: var(--grey);
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+}
+.reset:active { background: var(--soft); }
+
+.foot {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 2px solid var(--line);
+  font-size: 17px;
+  color: var(--grey);
+  text-align: center;
+}
+.updated { display: block; margin-top: 14px; font-size: 16px; }
+
+.top {
+  position: fixed;
+  right: 14px;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  padding: 14px 18px;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: inherit;
+  color: #fff;
+  background: var(--blue);
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .28);
+  cursor: pointer;
+}
+
+/* ---------- 5. 平板與電腦（畫面變寬才放大） ---------- */
+@media (min-width: 600px) {
+  :root { --font-base: 20px; }
+  .wrap { padding: 0 22px 120px; }
+  header { padding: 32px 20px 28px; }
+  header h1 { font-size: 32px; }
+  header .dates { font-size: 20px; }
+  .navbtns { grid-template-columns: repeat(4, 1fr); }
+  .navbtns a { font-size: 19px; }
+  section > h2 { font-size: 27px; }
+  ul.list label { font-size: 20px; min-height: 60px; }
+}
+
+/* ---------- 6. 列印 ----------
+   目標：整份印出來能直接拿在手上打勾，不浪費墨水、不會切到一半
+   -------------------------------------------------------------- */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
+  }
+
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  /* 螢幕上才需要的東西不要印出來 */
+  .progress, .top, .reset, nav { display: none !important; }
+
+  .wrap { max-width: none; padding: 0; }
+
+  /* 頁首改成白底黑字，省墨水 */
+  header {
+    background: #fff !important;
+    color: #000 !important;
+    padding: 0 0 8pt;
+    border-bottom: 2pt solid #000;
+    margin-bottom: 10pt;
+  }
+  header h1 { font-size: 18pt; margin-bottom: 4pt; }
+  header .dates { font-size: 11pt; }
+
+  .notice {
+    background: #fff !important;
+    border: 1pt solid #666;
+    padding: 8pt 10pt;
+    margin: 0 0 12pt;
+  }
+  .notice h2 { font-size: 12pt; color: #000; margin-bottom: 4pt; }
+  .notice p { font-size: 10.5pt; margin-bottom: 5pt; }
+
+  section { margin-top: 14pt; }
+  section > h2 {
+    font-size: 14pt;
+    color: #000;
+    border-bottom: 1.5pt solid #000;
+    padding-bottom: 3pt;
+    /* 標題不要單獨留在頁尾 */
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  .hint { font-size: 10pt; color: #333; margin: 6pt 0 8pt; }
+
+  /* 卡片類：不要被切到跨頁 */
+  .wcard, .layer, ul.list li {
+    background: #fff !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .wcard {
+    border: 1pt solid #999;
+    padding: 6pt 8pt;
+    margin-bottom: 6pt;
+  }
+  .wcard .place { font-size: 11.5pt; color: #000; }
+  .wcard .temp { font-size: 11pt; margin: 2pt 0 1pt; }
+  .wcard .tip { font-size: 10pt; color: #333; }
+  .wcard.cold .tip { color: #000; font-weight: 700; }
+
+  .layer { border: 1pt solid #999; padding: 6pt 8pt; margin-bottom: 6pt; gap: 8pt; }
+  .layer .num {
+    flex: 0 0 24pt;
+    height: 24pt;
+    background: #fff !important;
+    color: #000 !important;
+    border: 1.5pt solid #000;
+    font-size: 12pt;
+  }
+  .layer .body strong { font-size: 11pt; }
+  .layer .body span { font-size: 10pt; color: #333; }
+
+  /* 清單項目：印成可以用筆打勾的空格子 */
+  ul.list li { margin-bottom: 3pt; }
+  ul.list label {
+    border: none;
+    background: #fff !important;
+    padding: 2pt 0;
+    min-height: 0;
+    gap: 7pt;
+    font-size: 10.5pt;
+    align-items: flex-start;
+  }
+  ul.list label.done { background: #fff !important; }
+  ul.list label.done .txt { color: #000; text-decoration: none; }
+
+  ul.list input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 11pt;
+    height: 11pt;
+    margin-top: 2pt;
+    border: 1.2pt solid #000;
+    border-radius: 1.5pt;
+    background: #fff;
+    position: relative;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  /* 螢幕上已經勾起來的，印出來也會有勾 */
+  ul.list input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    top: -3pt;
+    left: 0.5pt;
+    font-size: 12pt;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .txt small { font-size: 9pt; color: #444; }
+  .txt strong.must { color: #000; text-decoration: underline; }
+
+  .foot {
+    margin-top: 14pt;
+    padding-top: 8pt;
+    border-top: 1pt solid #999;
+    font-size: 9.5pt;
+    color: #333;
+  }
+}
