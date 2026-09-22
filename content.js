@@ -210,10 +210,14 @@ var CONTENT = {
         nights: 1,
         weather: "vancouver",
         transport: [
-          { when: "10/8 13:20 → 16:50", title: "台北 → 首爾", note: "大韓航空 KE2022，全員同班機", status: "booked" },
-          { when: "10/8 22:40 → 16:30", title: "首爾 → 溫哥華", note: "大韓航空 KE075，抵達時仍是 10/8 當天下午", status: "booked" },
-          { when: "抵達後", title: "機場 → 飯店", note:"skytrain", status: "confirmed" },
-          { when: "離開", title: "飯店 → 機場", note:"skytrain", status: "confirmed" }
+          { date: "10/8（四）", items: [
+            { when: "13:20 → 16:50", title: "台北 → 首爾", note: "大韓航空 KE2022，全員同班機", status: "booked" },
+            { when: "22:40 → 16:30", title: "首爾 → 溫哥華", note: "大韓航空 KE075，抵達時仍是 10/8 當天下午", status: "booked" },
+            { when: "抵達後", title: "機場 → 飯店", note: "skytrain", status: "confirmed" }
+          ] },
+          { date: "10/9（五）", items: [
+            { title: "飯店 → 機場", note: "skytrain", status: "confirmed" }
+          ] }
         ],
         stay: [
           { name: "River Rock Casino Hotel", address: "8888 River Road, Richmond", city: "BC",
@@ -240,10 +244,16 @@ var CONTENT = {
         nights: 5,
         weather: "yellowknife",
         transport: [
-          { when: "10/9 13:40 → 17:06", title: "溫哥華 → 黃刀鎮", note: "加拿大航空 AC8024", status: "booked" },
-          { when: "10/9 抵達後", title: "機場 → 住處", note: "極光團接機：在機場領行李區等候，導遊會舉「Aurora Dream Tours 極光夢之旅」的牌子和團員名字", status: "booked" },
-          { when: "每晚約 21:55", title: "住處 ↔ 極光觀賞區", note: "極光團在住處接送", status: "booked" },
-          { when: "10/14 清晨", title: "住處 → 機場", note: "極光團送機，會提前 2 小時送到機場（班機 07:00 起飛，出門時間約 05:00）", status: "confirmed" }
+          { date: "10/9（五）", items: [
+            { when: "13:40 → 17:06", title: "溫哥華 → 黃刀鎮", note: "加拿大航空 AC8024", status: "booked" },
+            { when: "抵達後", title: "機場 → 住處", note: "極光團接機：在機場領行李區等候，導遊會舉「Aurora Dream Tours 極光夢之旅」的牌子和團員名字", status: "booked" }
+          ] },
+          { date: "每晚", items: [
+            { when: "約 21:55", title: "住處 ↔ 極光觀賞區", note: "極光團在住處接送", status: "booked" }
+          ] },
+          { date: "10/14（三）", items: [
+            { when: "清晨", title: "住處 → 機場", note: "極光團送機，會提前 2 小時送到機場（班機 07:00 起飛，出門時間約 05:00）", status: "confirmed" }
+          ] }
         ],
         stay: [
           { name: "Airbnb", address: "4922 44 St, Yellowknife", city: "NT",
@@ -281,13 +291,11 @@ var CONTENT = {
           { text: "大件防寒外套可以在當地租借", status: "confirmed" },
           { text: "看極光時人要站在野外不動，體感比溫度更冷" }
         ],
-     
-/* 全程資訊：聯絡電話 */ 
-        contacts: [
-      { name: "Aurora Dream Tours（黃刀鎮極光團）", phone: "+1 867 444 3888", note: "電話、LINE、WhatsApp 同號" }
-    ]
 
-        
+        /* 全程資訊：聯絡電話 */
+        contacts: [
+          { name: "Aurora Dream Tours（黃刀鎮極光團）", phone: "+1 867 444 3888", note: "電話、LINE、WhatsApp 同號" }
+        ]
       },
 
       {
@@ -299,12 +307,18 @@ var CONTENT = {
         weather: "toronto",
         alert: "10/16 行程很趕：退房後 12:30 要在多倫多還車，15:23 搭火車去蒙特婁。",
         transport: [
-          { when: "10/14 07:00 → 08:50", title: "黃刀鎮 → 埃德蒙頓", note: "加拿大航空 AC8114", status: "booked" },
-          { when: "10/14 11:10 → 16:56", title: "埃德蒙頓 → 多倫多", note: "加拿大航空 AC164，抵達第 1 航廈", status: "booked" },
-          { when: "10/14 抵達後", title: "機場 → 住處", note: "Uber", status: "confirmed" },
-          { when: "10/15", title: "多倫多 → 尼加拉瀑布", note: "Hertz 租車 2 台，在多倫多 Brookfield Place 取車（取車時間待補），自駕約 1.5 小時", status: "booked" },
-          { when: "10/16 12:30", title: "尼加拉瀑布 → 多倫多", note: "開回多倫多，12:30 在 Brookfield Place 還車", status: "booked" },
-          { when: "10/16 15:23 → 20:25", title: "多倫多 → 蒙特婁（火車）", note: "VIA Rail 66 次，多倫多 Union Station 發車，抵達蒙特婁 Gare Centrale。第 5 車廂，座位 6A、6B、6C、6D、7A、7B", status: "booked" }
+          { date: "10/14（三）", items: [
+            { when: "07:00 → 08:50", title: "黃刀鎮 → 埃德蒙頓", note: "加拿大航空 AC8114", status: "booked" },
+            { when: "11:10 → 16:56", title: "埃德蒙頓 → 多倫多", note: "加拿大航空 AC164，抵達第 1 航廈", status: "booked" },
+            { when: "抵達後", title: "機場 → 住處", note: "Uber", status: "confirmed" }
+          ] },
+          { date: "10/15（四）", items: [
+            { title: "多倫多 → 尼加拉瀑布", note: "Hertz 租車 2 台，在多倫多 Brookfield Place 取車（取車時間待補），自駕約 1.5 小時", status: "booked" }
+          ] },
+          { date: "10/16（五）", items: [
+            { when: "12:30", title: "尼加拉瀑布 → 多倫多", note: "開回多倫多，12:30 在 Brookfield Place 還車", status: "booked" },
+            { when: "15:23 → 20:25", title: "多倫多 → 蒙特婁（火車）", note: "VIA Rail 66 次，多倫多 Union Station 發車，抵達蒙特婁 Gare Centrale。第 5 車廂，座位 6A、6B、6C、6D、7A、7B", status: "booked" }
+          ] }
         ],
         stay: [
           { name: "10/14｜Luxury Condo Downtown Toronto", address: "251 Jarvis Street, Toronto", city: "ON",
@@ -351,9 +365,15 @@ var CONTENT = {
         nights: 3,
         weather: "montreal",
         transport: [
-          { when: "10/16 20:25", title: "Gare Centrale 中央車站 → 住處", note: "轉搭地鐵到住處" },
-          { when: "10/17", title: "蒙特婁取車", note: "Hertz 2 台，一路開到魁北克市，10/22 在魁北克機場還車。取車時間待補", status: "booked" },
-          { when: "10/19", title: "蒙特婁 → 魁北克市", note: "自駕約 3 小時，走 20 號公路" }
+          { date: "10/16（五）", items: [
+            { when: "20:25", title: "Gare Centrale 中央車站 → 住處", note: "轉搭地鐵到住處" }
+          ] },
+          { date: "10/17（六）", items: [
+            { title: "蒙特婁取車", note: "Hertz 2 台，一路開到魁北克市，10/22 在魁北克機場還車。取車時間待補", status: "booked" }
+          ] },
+          { date: "10/19（一）", items: [
+            { title: "蒙特婁 → 魁北克市", note: "自駕約 3 小時，走 20 號公路" }
+          ] }
         ],
         stay: [
           { name: "Airbnb", address: "2410 Rue Joliette, Montréal", city: "QC",
@@ -401,11 +421,17 @@ var CONTENT = {
         nights: 3,
         weather: "quebec",
         transport: [
-          { when: "10/19", title: "蒙特婁 → 魁北克市", note: "自駕約 3 小時" },
-          { when: "市區", title: "上城 ↔ 下城", note: "搭 Funiculaire 纜車（單程約 5 加幣），不要走斷頸梯 Escalier Casse-Cou" },
-          { when: "10/22 12:00 前", title: "住處 → 魁北克 YQB 機場", note: "開車約 20 分鐘，在機場還車", status: "booked" },
-          { when: "10/22 14:50 → 15:45", title: "魁北克 → 蒙特婁", note: "加拿大航空 AC1155", status: "booked" },
-          { when: "10/22 16:30 → 19:02", title: "蒙特婁 → 溫哥華", note: "加拿大航空 AC307", status: "booked" }
+          { date: "10/19（一）", items: [
+            { title: "蒙特婁 → 魁北克市", note: "自駕約 3 小時" }
+          ] },
+          { date: "市區內移動", items: [
+            { title: "上城 ↔ 下城", note: "搭 Funiculaire 纜車（單程約 5 加幣），不要走斷頸梯 Escalier Casse-Cou" }
+          ] },
+          { date: "10/22（四）", items: [
+            { when: "12:00 前", title: "住處 → 魁北克 YQB 機場", note: "開車約 20 分鐘，在機場還車", status: "booked" },
+            { when: "14:50 → 15:45", title: "魁北克 → 蒙特婁", note: "加拿大航空 AC1155", status: "booked" },
+            { when: "16:30 → 19:02", title: "蒙特婁 → 溫哥華", note: "加拿大航空 AC307", status: "booked" }
+          ] }
         ],
         stay: [
           { name: "Airbnb", address: "20 Bd Charest O, Québec", city: "QC",
@@ -432,7 +458,7 @@ var CONTENT = {
           { date: "10/21（三）", title: "郊區自駕日",
             items: [
               { time: "中午", text: "Sainte-Anne-de-Beaupré 大教堂", note: "全年開放，彩繪玻璃和馬賽克很值得看" },
-              { time: "下午", text: "Île d'Orléans 奧爾良島環島", note: "環島公路約 67 公里，開車 1.5–2 小時。沿途蘋果酒莊、楓糖屋、小教堂。農場店家十月中後陸續休季，先查營業時間", status: "confirm" },
+              { time: "下午", text: "Île d'Orléans 奧爾良島環島", note: "環島公路約 67 公里，開車 1.5–2 小時。沿途蘋果酒莊、楓糖屋、小教堂。農場店家十月中後陸續休季，先查營業時間", status: "confirmed" },
               { text: "替代方案", note: "Canyon Sainte-Anne 峽谷吊橋（需確認開放日）" }
             ] },
           { date: "10/22（四）", title: "離開日",
@@ -457,10 +483,18 @@ var CONTENT = {
         weather: "vancouver",
         alert: "回程班機 10/24 凌晨 00:55 起飛，10/23 晚上就要出發去機場。",
         transport: [
-          { when: "10/22 19:02", title: "溫哥華機場 → 飯店", note: "skytrain", status: "confirmed" },
-          { when: "10/23 晚上", title: "市區 → 溫哥華機場", note: "skytrain", status: "confirmed" },
-          { when: "10/24 00:55 → 10/25 04:40", title: "溫哥華 → 首爾", note: "大韓航空 KE076", status: "booked" },
-          { when: "10/25 09:00 → 11:00", title: "首爾 → 台北", note: "大韓航空 KE2021", status: "booked" }
+          { date: "10/22（四）", items: [
+            { when: "19:02", title: "溫哥華機場 → 飯店", note: "skytrain", status: "confirmed" }
+          ] },
+          { date: "10/23（五）", items: [
+            { when: "晚上", title: "市區 → 溫哥華機場", note: "skytrain", status: "confirmed" }
+          ] },
+          { date: "10/24（六） → 10/25（日）", items: [
+            { when: "00:55 → 04:40", title: "溫哥華 → 首爾", note: "大韓航空 KE076", status: "booked" }
+          ] },
+          { date: "10/25（日）", items: [
+            { when: "09:00 → 11:00", title: "首爾 → 台北", note: "大韓航空 KE2021", status: "booked" }
+          ] }
         ],
         stay: [
           { name: "Hotel BLU（布魯酒店）", address: "177 Robson Street, Vancouver", city: "BC",
@@ -490,6 +524,6 @@ var CONTENT = {
         ]
       }
 
-    ],
+    ]
   },
 };

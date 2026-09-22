@@ -197,12 +197,39 @@
     return d;
   }
 
+  // 依標題／備註裡的關鍵字，自動配對交通方式的圖示
+  var TRANSPORT_ICON_RULES = [
+    { icon: "\u2708\uFE0F", test: /航空|[A-Z]{2}\d{2,4}/ },              // 飛機
+    { icon: "\uD83D\uDE86", test: /VIA Rail|火車/ },                     // 火車
+    { icon: "\uD83D\uDE97", test: /自駕|租車|Hertz|取車|還車|極光團|接送/ }, // 開車／租車／接送
+    { icon: "\uD83D\uDE95", test: /Uber|計程車/ },                       // 叫車
+    { icon: "\uD83D\uDE87", test: /skytrain|地鐵|纜車|Funiculaire/i }     // 大眾運輸
+  ];
+  function iconFor(t) {
+    var hay = (t.title || "") + " " + (t.note || "");
+    for (var i = 0; i < TRANSPORT_ICON_RULES.length; i++) {
+      if (TRANSPORT_ICON_RULES[i].test.test(hay)) return TRANSPORT_ICON_RULES[i].icon;
+    }
+    return "";
+  }
+
   function renderTransport(t) {
+    var icon = iconFor(t);
+    var row = el("div", { class: "trow" }, [
+      icon ? el("span", { class: "ticon", text: icon }) : null,
+      t.when ? el("span", { class: "twhen", text: t.when }) : null,
+      el("span", { class: "ttitle" }, [t.title, badge(t.status)])
+    ]);
     return el("div", { class: "item" }, [
-      t.when ? el("div", { class: "when", text: t.when }) : null,
-      el("div", { class: "what" }, [t.title, badge(t.status)]),
+      row,
       t.note ? el("small", { text: t.note }) : null
     ]);
+  }
+
+  function renderTransportGroup(g) {
+    var box = el("div", { class: "tgroup" }, [el("h3", { text: g.date })]);
+    (g.items || []).forEach(function (t) { box.appendChild(renderTransport(t)); });
+    return box;
   }
 
   function renderStay(s) {
@@ -250,6 +277,14 @@
     ]);
   }
 
+  function renderContact(ct) {
+    return el("div", { class: "contact" }, [
+      el("strong", { text: ct.name }),
+      el("a", { href: "tel:" + ct.phone.replace(/[^\d+]/g, ""), text: ct.phone }),
+      ct.note ? el("small", { text: ct.note }) : null
+    ]);
+  }
+
   function renderCity(c) {
     var sec = el("section", { class: "city", id: c.id }, [el("h2", { text: c.name })]);
     sec.appendChild(el("p", { class: "meta", text: c.dates + (c.nights ? "・住 " + c.nights + " 晚" : "") }));
@@ -257,9 +292,10 @@
     if (w) sec.appendChild(el("p", { class: "wline", text: "天氣：" + w.temp }));
     if (c.alert) sec.appendChild(el("div", { class: "alert", text: c.alert }));
 
-    append(sec, block("交通", c.transport, renderTransport, false));
+    append(sec, block("交通", c.transport, renderTransportGroup, false));
     append(sec, block("住宿", c.stay, renderStay, false));
     append(sec, block("活動", c.days, renderDay, true));
+    append(sec, block("聯絡電話", c.contacts, renderContact, false));
     append(sec, block("提醒", c.tips, renderSimple, false));
     return sec;
   }
@@ -309,13 +345,7 @@
     // 全程資訊
     if (it.contacts && it.contacts.length) {
       var gen = el("section", { id: "general" }, [el("h2", { text: "全程資訊" })]);
-      it.contacts.forEach(function (ct) {
-        gen.appendChild(el("div", { class: "contact" }, [
-          el("strong", { text: ct.name }),
-          el("a", { href: "tel:" + ct.phone.replace(/[^\d+]/g, ""), text: ct.phone }),
-          ct.note ? el("small", { text: ct.note }) : null
-        ]));
-      });
+      it.contacts.forEach(function (ct) { gen.appendChild(renderContact(ct)); });
       root.appendChild(gen);
     }
   }

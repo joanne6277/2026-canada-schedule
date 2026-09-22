@@ -364,7 +364,6 @@ details.blk[open] > summary { border-bottom: 2px solid var(--line); }
 
 .item { padding: 12px 0; border-top: 1px solid var(--line); }
 .item:first-child { border-top: 0; }
-.item .when { font-size: 17px; font-weight: 700; color: var(--blue); }
 .item .what { font-size: 19px; font-weight: 700; }
 .item .line { font-size: 18px; margin-top: 3px; }
 .item small, .day small {
@@ -375,6 +374,29 @@ details.blk[open] > summary { border-bottom: 2px solid var(--line); }
 }
 .item.simple > span { font-size: 19px; }
 .maplink { font-weight: 700; color: var(--blue); white-space: nowrap; }
+
+/* 交通：一列＝圖示｜時間｜標題，時間欄位固定寬度方便對齊 */
+.trow { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.ticon { font-size: 18px; flex: 0 0 auto; }
+.twhen {
+  flex: 0 0 auto;
+  min-width: 6.2em;
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--blue);
+}
+.ttitle { font-size: 19px; font-weight: 700; }
+
+/* 交通依日期分組，外觀跟「活動」的每日卡片一致 */
+.tgroup {
+  background: var(--soft);
+  border-radius: 12px;
+  padding: 4px 14px 2px;
+  margin: 12px 0;
+}
+.tgroup h3 { margin: 0; font-size: 19px; color: var(--navy); }
+.tgroup .item:first-child { border-top: 0; }
 
 /* 每日卡片 */
 .day {
@@ -415,7 +437,7 @@ details.blk[open] > summary { border-bottom: 2px solid var(--line); }
   white-space: nowrap;
 }
 .badge.booked  { color: var(--green); background: var(--greenbg); border-color: #a5d6a7; }
-.badge.confirm { color: var(--gold);  background: var(--warm);    border-color: #e8c46a; }
+.badge.confirmed { color: var(--gold);  background: var(--warm);    border-color: #e8c46a; }
 .badge.tbd     { color: #555;         background: #eee;           border-color: #bbb; }
 
 /* 聯絡電話 */
@@ -588,13 +610,13 @@ details.blk[open] > summary { border-bottom: 2px solid var(--line); }
   details.blk > summary::after, details.blk[open] > summary::after { content: none; }
   .blk-body { padding: 2pt 8pt 6pt; }
   .item { padding: 4pt 0; break-inside: avoid; page-break-inside: avoid; }
-  .item .when, .day li .t { font-size: 10pt; color: #000; }
-  .item .what, .item.simple > span, .day li .what { font-size: 10.5pt; }
+  .twhen, .day li .t { font-size: 10pt; color: #000; }
+  .item .what, .item.simple > span, .day li .what, .ttitle { font-size: 10.5pt; }
   .item .line { font-size: 10pt; }
   .item small, .day small, .contact small { font-size: 9pt; color: #444; }
   .maplink { display: none; }
-  .day { background: #fff !important; border: 1pt solid #ccc; padding: 4pt 8pt; margin: 5pt 0; }
-  .day h3 { font-size: 11pt; color: #000; }
+  .day, .tgroup { background: #fff !important; border: 1pt solid #ccc; padding: 4pt 8pt; margin: 5pt 0; }
+  .day h3, .tgroup h3 { font-size: 11pt; color: #000; }
   .day .daynote { font-size: 9.5pt; color: #000; }
   .day li { padding: 3pt 0; break-inside: avoid; page-break-inside: avoid; }
   .badge { font-size: 8pt; background: #fff !important; color: #000 !important; border: 1pt solid #000; }
