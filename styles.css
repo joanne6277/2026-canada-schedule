@@ -374,6 +374,7 @@ details.blk[open] > summary { border-bottom: 2px solid var(--line); }
 }
 .item.simple > span { font-size: 19px; }
 .maplink { font-weight: 700; color: var(--blue); white-space: nowrap; }
+.extlink { display: inline-block; margin-top: 4px; white-space: normal; }
 
 /* 交通：一列＝圖示｜時間｜標題，時間欄位固定寬度方便對齊 */
 .trow { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }

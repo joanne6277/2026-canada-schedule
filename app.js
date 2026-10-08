@@ -213,6 +213,12 @@
     return "";
   }
 
+  // 選填的外部連結：在項目裡加 link: "https://..."、linkText: "顯示文字"
+  function linkOf(x) {
+    if (!x.link) return null;
+    return el("a", { class: "maplink extlink", href: x.link, target: "_blank", rel: "noopener", text: x.linkText || "開啟連結" });
+  }
+
   function renderTransport(t) {
     var icon = iconFor(t);
     var row = el("div", { class: "trow" }, [
@@ -222,7 +228,8 @@
     ]);
     return el("div", { class: "item" }, [
       row,
-      t.note ? el("small", { text: t.note }) : null
+      t.note ? el("small", { text: t.note }) : null,
+      linkOf(t)
     ]);
   }
 
@@ -262,7 +269,8 @@
         el("span", { class: "t", text: it.time || "" }),
         el("div", { class: "b" }, [
           el("span", { class: "what" }, [it.text, badge(it.status)]),
-          it.note ? el("small", { text: it.note }) : null
+          it.note ? el("small", { text: it.note }) : null,
+          linkOf(it)
         ])
       ]));
     });
@@ -273,7 +281,8 @@
   function renderSimple(x) {
     return el("div", { class: "item simple" }, [
       el("span", null, [x.text, badge(x.status)]),
-      x.note ? el("small", { text: x.note }) : null
+      x.note ? el("small", { text: x.note }) : null,
+      linkOf(x)
     ]);
   }
 

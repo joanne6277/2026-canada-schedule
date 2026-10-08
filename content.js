@@ -17,7 +17,7 @@ var CONTENT = {
   dates: "10月8日（四）～ 10月25日（日）",
 
   /* 每次更新內容時順手改這個日期，家人就知道有沒有新版本 */
-  updated: "2026年9月26日",
+  updated: "2026年10月8日",
 
   /* ---------- 開頭的重點提醒（黃色框） ---------- */
   notice: {
@@ -165,10 +165,11 @@ var CONTENT = {
       nav: "電器",
       title: "電器與 3C",
       items: [
-        { text: "手機、充電器、充電線" },
+        { text: "手機、充電器、充電線", note: "充電線放隨身，飛機上前方座位下方應該有 USB 插孔" },
         { text: "行動電源", note: "一定要隨身，不可以放托運行李。天冷掉電很快，看極光時放在口袋裡保溫" },
         { text: "相機、記憶卡、備用電池", note: "備用電池同樣放口袋保溫" },
-        { text: "不用帶轉接頭", note: "加拿大插座和電壓跟台灣一樣，直接插就可以" }
+        { text: "圓孔轉接頭", note: "在韓國轉機時想充電才需要，韓國是圓孔插座" },
+        { text: "加拿大不用轉接頭，但要注意電壓", note: "插座跟台灣一樣，電壓不同。手機充電器通常支援 100–240V 可以直接用；其他電器先看標示的電壓，必要時準備變壓器" }
       ]
     },
 
@@ -222,14 +223,25 @@ var CONTENT = {
             rooms: "兩間四人房" }
         ],
         days: [
-          { date: "10/8（四）", title: "抵達日",
+          { date: "10/8（四）", title: "首爾轉機，抵達溫哥華",
             items: [
-              { time: "16:30", text: "抵達溫哥華機場" },
+              { time: "16:50", text: "首爾仁川機場轉機（約 6 小時）",
+                note: "行李直掛，下飛機後跟著地勤的轉機牌子走，過安檢後就是候機大廳。3 樓大多是免稅店；4 樓可以吃東西、休息，西側 Public Lounge 是免費休息區，東側有淋浴間",
+                link: "https://www.airport.kr/geomap/ap_ko/view.do#/search", linkText: "仁川機場地圖（右上角可選語言）" },
+              { time: "22:40", text: "首爾起飛" },
+              { time: "16:30", text: "抵達溫哥華機場，搭 SkyTrain 到飯店" },
               { time: "晚上", text: "入住飯店，休息", note: "隔天中午要搭機去黃刀鎮" }
+            ] },
+          { date: "10/9（五）", title: "Outlet、飛黃刀鎮",
+            items: [
+              { time: "上午", text: "Outlet 逛街＋吃飯", note: "飯店 11:00 前退房",
+                link: "https://maps.app.goo.gl/8RjuPLNZUd86ie138?g_st=ic", linkText: "開地圖" },
+              { time: "中午", text: "回溫哥華機場" },
+              { time: "13:40", text: "飛往黃刀鎮" }
             ] }
         ],
         tips: [
-          { text: "10/9 11:00 前退房，13:40 從溫哥華飛黃刀鎮。搭飛機前後如果有時間可以到機場附近outlet逛逛" }
+          { text: "10/9 11:00 前退房，13:40 從溫哥華飛黃刀鎮" }
         ]
       },
 
@@ -306,7 +318,7 @@ var CONTENT = {
         transport: [
           { date: "10/14（三）", items: [
             { when: "07:00 → 08:50", title: "黃刀鎮 → 埃德蒙頓", note: "加拿大航空 AC8114", status: "booked" },
-            { when: "11:10 → 16:56", title: "埃德蒙頓 → 多倫多", note: "加拿大航空 AC164，抵達第 1 航廈", status: "booked" },
+            { when: "11:10 → 16:52", title: "埃德蒙頓 → 多倫多", note: "加拿大航空 AC164，抵達第 1 航廈", status: "booked" },
             { when: "抵達後", title: "機場 → 住處", note: "Uber", status: "confirmed" }
           ] },
           { date: "10/15（四）", items: [
@@ -331,7 +343,7 @@ var CONTENT = {
           { date: "10/14（三）", title: "移動日",
             items: [
               { time: "05:00", text: "從黃刀鎮住處出發去機場", status: "confirmed" },
-              { time: "16:56", text: "抵達多倫多，前往住處" },
+              { time: "16:52", text: "抵達多倫多，前往住處" },
               { time: "晚上", text: "入住休息" }
             ] },
           { date: "10/15（四）", title: "尼加拉瀑布",
@@ -426,7 +438,7 @@ var CONTENT = {
           ] },
           { date: "10/22（四）", items: [
             { when: "12:00 前", title: "住處 → 魁北克 YQB 機場", note: "開車約 20 分鐘，在機場還車", status: "booked" },
-            { when: "14:50 → 15:45", title: "魁北克 → 蒙特婁", note: "加拿大航空 AC1155", status: "booked" },
+            { when: "14:50 → 15:40", title: "魁北克 → 蒙特婁", note: "加拿大航空 AC1155", status: "booked" },
             { when: "16:30 → 19:02", title: "蒙特婁 → 溫哥華", note: "加拿大航空 AC307", status: "booked" }
           ] }
         ],
@@ -487,10 +499,10 @@ var CONTENT = {
             { when: "晚上", title: "市區 → 溫哥華機場", note: "skytrain", status: "confirmed" }
           ] },
           { date: "10/24（六） → 10/25（日）", items: [
-            { when: "00:55 → 04:40", title: "溫哥華 → 首爾", note: "大韓航空 KE076", status: "booked" }
+            { when: "00:55 → 04:25", title: "溫哥華 → 首爾", note: "大韓航空 KE076", status: "booked" }
           ] },
           { date: "10/25（日）", items: [
-            { when: "09:00 → 11:00", title: "首爾 → 台北", note: "大韓航空 KE2021", status: "booked" }
+            { when: "09:00 → 11:00", title: "首爾 → 台北", note: "大韓航空 KE2025", status: "booked" }
           ] }
         ],
         stay: [
@@ -512,7 +524,7 @@ var CONTENT = {
           { date: "10/24（六）– 10/25（日）", title: "回台灣",
             items: [
               { time: "00:55", text: "溫哥華起飛" },
-              { time: "04:40", text: "10/25 抵達首爾，轉機" },
+              { time: "04:25", text: "10/25 抵達首爾，轉機" },
               { time: "11:00", text: "抵達台北" }
             ] }
         ],
