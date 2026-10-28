@@ -1,14 +1,12 @@
 /* ============================================================================
-   程式邏輯 —— 把 content.js 的內容畫成網頁、切換分頁，並記住勾選狀態
+   程式邏輯 —— 把 content.js 的內容畫成網頁（行程、結算），並切換分頁
    一般維護不需要動這個檔案，改文字請去 content.js
    ========================================================================== */
 
 (function () {
   "use strict";
 
-  var STORAGE_KEY = "canada2026-packing";   // 打包勾選紀錄。不要改，改了家人的勾選會消失
   var TAB_KEY = "canada2026-tab";           // 記住上次看的分頁
-  var TRIP_START = new Date("2026-10-08T00:00:00+08:00"); // 出發後預設開「行程」
   var STATUS_TEXT = { booked: "已訂", confirmed: "已確認", tbd: "待補" };
 
   /* --------------------------------------------------------------
@@ -82,91 +80,68 @@
   }
 
   /* --------------------------------------------------------------
-     打包清單分頁
+     結算分頁
      -------------------------------------------------------------- */
 
-  function renderNotice() {
-    var n = CONTENT.notice;
-    if (!n) return;
-    var box = el("div", { class: "notice" }, [el("h2", { text: n.heading })]);
-    n.items.forEach(function (item) {
-      // bold 是選填：有就先印一段粗體，沒有就只印 text（兩種寫法都支援）
-      var parts = [];
-      if (item.bold) parts.push(el("strong", { text: item.bold }));
-      if (item.text) parts.push(item.text);
-      box.appendChild(el("p", null, parts));
-    });
-    document.getElementById("notice").appendChild(box);
+  // 金額加上千分位：125000 → 125,000
+  function money(n) {
+    return "NT$" + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  function renderNav() {
-    var links = [{ id: "weather", nav: "天氣" }, { id: "layers", nav: "怎麼穿" }]
-      .concat(CONTENT.checklists.map(function (c) { return { id: c.id, nav: c.nav }; }));
+  // 各項目的顏色（上方長條和每一項前面的圓點用同一個顏色），依項目順序套用
+  var FEE_COLORS = ["#1f3864", "#4a78c2", "#2e9e8f", "#e0a030", "#d06a4c", "#8a6bbf"];
 
-    var btns = el("div", { class: "navbtns" });
-    links.forEach(function (l) {
-      btns.appendChild(el("a", { href: "#" + l.id, text: l.nav }));
+  function renderSettlement() {
+    var st = CONTENT.settlement;
+    var root = document.getElementById("settle");
+    if (!st) return;
+    var total = 0;
+    st.items.forEach(function (it) { total += it.amount; });
+    function color(i) { return FEE_COLORS[i % FEE_COLORS.length]; }
+
+    var sec = el("section", { id: "fee" }, [el("h2", { text: st.title })]);
+
+    // 最上面：每人團費
+    sec.appendChild(el("div", { class: "feetotal" }, [
+      el("span", { class: "lbl", text: "每人團費" }),
+      el("strong", { text: money(total) }),
+      st.heroNote ? el("span", { class: "sub", text: st.heroNote }) : null
+    ]));
+
+    // 分段長條：看各項比例
+    var stack = el("div", { class: "feestack", "aria-hidden": "true" });
+    st.items.forEach(function (it, i) {
+      stack.appendChild(el("span", {
+        style: "width:" + (it.amount / total * 100).toFixed(2) + "%;background:" + color(i),
+        title: it.name
+      }));
     });
+    sec.appendChild(stack);
 
-    var nav = document.getElementById("nav");
-    nav.appendChild(el("p", { text: "點下面的按鈕可以直接跳到那一段：" }));
-    nav.appendChild(btns);
-  }
-
-  function renderWeather() {
-    var w = CONTENT.weather;
-    if (!w) return null;
-    var sec = el("section", { id: "weather" }, [el("h2", { text: w.title })]);
-    if (w.hint) sec.appendChild(el("p", { class: "hint", text: w.hint }));
-
-    w.cards.forEach(function (c) {
-      sec.appendChild(el("div", { class: "wcard" + (c.highlight ? " cold" : "") }, [
-        el("div", { class: "place", text: c.place }),
-        el("div", { class: "temp", text: c.temp }),
-        el("div", { class: "tip", text: c.tip })
+    // 每人分攤
+    sec.appendChild(el("h3", { class: "feeh", text: "每人分攤" }));
+    var list = el("div", { class: "feelist" });
+    st.items.forEach(function (it, i) {
+      list.appendChild(el("div", { class: "feerow" }, [
+        el("div", { class: "fhead" }, [
+          el("span", { class: "name" }, [
+            el("i", { class: "dot", style: "background:" + color(i) }), it.name
+          ]),
+          el("span", { class: "amt", text: money(it.amount) })
+        ]),
+        it.note ? el("small", { text: it.note }) : null
       ]));
     });
-    return sec;
-  }
+    list.appendChild(el("div", { class: "feerow sum" }, [
+      el("div", { class: "fhead" }, [
+        el("span", { class: "name", text: "每人合計" }),
+        el("span", { class: "amt", text: money(total) })
+      ])
+    ]));
+    sec.appendChild(list);
 
-  function renderLayers() {
-    var l = CONTENT.layers;
-    if (!l) return null;
-    var sec = el("section", { id: "layers" }, [el("h2", { text: l.title })]);
-    if (l.hint) sec.appendChild(el("p", { class: "hint", text: l.hint }));
-
-    l.items.forEach(function (item, i) {
-      sec.appendChild(el("div", { class: "layer" }, [
-        el("div", { class: "num", text: String(i + 1) }),
-        el("div", { class: "body" }, [
-          el("strong", { text: item.title }),
-          el("span", { text: item.desc })
-        ])
-      ]));
-    });
-    return sec;
-  }
-
-  function renderChecklist(group) {
-    var sec = el("section", { id: group.id }, [el("h2", { text: group.title })]);
-    if (group.hint) sec.appendChild(el("p", { class: "hint", text: group.hint }));
-
-    var ul = el("ul", { class: "list" });
-    group.items.forEach(function (item) {
-      var box = el("input", { type: "checkbox" });
-      box.dataset.key = keyOf(group.id, item.text);
-
-      var txt = el("span", { class: "txt" }, [
-        item.must ? el("strong", { class: "must", text: item.text })
-                  : document.createTextNode(item.text),
-        item.note ? el("small", { text: item.note }) : null
-      ]);
-
-      ul.appendChild(el("li", null, [el("label", null, [box, txt])]));
-    });
-
-    sec.appendChild(ul);
-    return sec;
+    if (st.footnote) sec.appendChild(el("p", { class: "hint feefoot", text: st.footnote }));
+    root.appendChild(sec);
   }
 
   /* --------------------------------------------------------------
@@ -200,7 +175,7 @@
   // 依標題／備註裡的關鍵字，自動配對交通方式的圖示
   var TRANSPORT_ICON_RULES = [
     { icon: "\u2708\uFE0F", test: /航空|[A-Z]{2}\d{2,4}/ },              // 飛機
-    { icon: "\uD83D\uDE86", test: /VIA Rail|火車/ },                     // 火車
+    { icon: "\uD83D\uDE86", test: /VIA Rail|火車|高鐵/ },                     // 火車
     { icon: "\uD83D\uDE97", test: /自駕|租車|Hertz|取車|還車|極光團|接送/ }, // 開車／租車／接送
     { icon: "\uD83D\uDE95", test: /Uber|計程車/ },                       // 叫車
     { icon: "\uD83D\uDE87", test: /skytrain|地鐵|纜車|Funiculaire/i }     // 大眾運輸
@@ -363,7 +338,7 @@
      分頁切換
      -------------------------------------------------------------- */
 
-  var TABS = ["itinerary", "packing"];
+  var TABS = ["itinerary", "settlement"];
   var panels = {};
 
   function showTab(name, opts) {
@@ -411,7 +386,7 @@
   function defaultTab() {
     var saved = storeGet(TAB_KEY);
     if (TABS.indexOf(saved) >= 0) return saved;
-    return new Date() >= TRIP_START ? "itinerary" : "packing";
+    return "itinerary";
   }
 
   function setupTabs() {
@@ -456,46 +431,6 @@
   }
 
   /* --------------------------------------------------------------
-     勾選狀態：存在瀏覽器裡，關掉再打開還會在
-     -------------------------------------------------------------- */
-
-  var boxes = [];
-  var ptext, pbar;
-
-  function loadState() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      var saved = JSON.parse(raw);
-      if (!saved || typeof saved !== "object") return;
-      boxes.forEach(function (b) { b.checked = !!saved[b.dataset.key]; });
-    } catch (e) {
-      // 讀不到就當作全新的清單，不影響使用
-    }
-  }
-
-  function saveState() {
-    try {
-      var data = {};
-      boxes.forEach(function (b) { if (b.checked) data[b.dataset.key] = true; });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    } catch (e) {
-      // 存不了也不影響使用
-    }
-  }
-
-  function paint() {
-    var done = 0;
-    boxes.forEach(function (b) {
-      var label = b.closest("label");
-      if (b.checked) { done++; label.classList.add("done"); }
-      else { label.classList.remove("done"); }
-    });
-    ptext.textContent = "打包進度 " + done + " / " + boxes.length;
-    pbar.style.width = boxes.length ? (done / boxes.length * 100) + "%" : "0%";
-  }
-
-  /* --------------------------------------------------------------
      啟動
      -------------------------------------------------------------- */
 
@@ -506,41 +441,13 @@
     }
 
     renderHeader();
-
-    // 打包清單分頁
-    renderNotice();
-    renderNav();
-    var main = document.getElementById("main");
-    [renderWeather(), renderLayers()].forEach(function (s) { if (s) main.appendChild(s); });
-    CONTENT.checklists.forEach(function (g) { main.appendChild(renderChecklist(g)); });
-
-    // 行程分頁
     renderItinerary();
-
+    renderSettlement();
     renderFooter();
-
-    // 進度只算打包清單裡的勾選框
-    ptext = document.getElementById("ptext");
-    pbar = document.getElementById("pbar");
-    boxes = Array.prototype.slice.call(main.querySelectorAll('input[type="checkbox"]'));
-
-    boxes.forEach(function (b) {
-      b.addEventListener("change", function () { paint(); saveState(); });
-    });
-
-    document.getElementById("resetBtn").addEventListener("click", function () {
-      if (!window.confirm("確定要清除全部勾選嗎？")) return;
-      boxes.forEach(function (b) { b.checked = false; });
-      paint();
-      saveState();
-    });
 
     document.getElementById("topBtn").addEventListener("click", function () {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
-
-    loadState();
-    paint();
 
     setupTabs();
     setupPrint();
